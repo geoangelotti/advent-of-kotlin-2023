@@ -1,20 +1,7 @@
+object Day01 {
+    fun processPart1(input:String) : Int =
+       input.split("\n").map{ processLine(it) }.sum()
 
-
-    fun process_pt1(input:String) : Int
-    {
-         val numbers = input.split("\n").map{process_line(it)}
-
-        return numbers.sum()
-
-    }
-
-    fun process_line(input:String) : Int
-    {
-      val digits =   input.filter { it.isDigit() }
-        val first = digits.first().digitToInt()
-        val last = digits.last().digitToInt()
-
-        return first*10 + last
-
-    }
-
+    private fun processLine(input:String) : Int =
+        input.filter { it.isDigit() }.let { it.first().digitToInt() * 10 + it.last().digitToInt() }
+}
