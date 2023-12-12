@@ -1,13 +1,14 @@
-import org.junit.jupiter.api.Assertions.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class Day01Test {
-    val input = """1abc2
+    val INPUT = """1abc2
 pqr3stu8vwx
 a1b2c3d4e5f
 treb7uchet"""
 
-    fun test_process_pt1()
-    {
-        assert(process_pt1(input) == 142)
+    @Test
+    fun `Test part 1`() {
+        assertEquals(Day01.processPart1(INPUT), 142)
     }
 }
