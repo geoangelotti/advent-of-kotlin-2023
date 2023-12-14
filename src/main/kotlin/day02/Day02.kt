@@ -7,13 +7,12 @@ object Day02 {
             val lineSplit = line.split(":")
             val game = lineSplit[0].split(" ")[1].toInt()
             val draws = lineSplit[1].split(";")
-            val impossibleGame = draws.map { draw ->
+            if (draws.any { draw ->
                 draw.split(",").any{ cube->
                     val (_, number, color) = cube.split(" ")
                     val limit = limits.getOrDefault(color, 15)
                     number.toInt() > limit
                 }
-            }.any{ it }
-            if (impossibleGame) 0 else game
+            }) 0 else game
         }
 }
