@@ -9,11 +9,11 @@ object Day02 {
             val game = line[0].split(" ")[1].toInt()
             val draws = line[1].split(";")
             if (draws.any { draw ->
-                draw.split(",").any{ cube->
-                    val (_, number, color) = cube.split(" ")
-                    val limit = limits.getOrDefault(color, 15)
-                    number.toInt() > limit
-                }
-            }) 0 else game
+                    draw.split(",").any { cube ->
+                        val (_, number, color) = cube.split(" ")
+                        val limit = limits.getOrDefault(color, 15)
+                        number.toInt() > limit
+                    }
+                }) 0 else game
         }
 }
