@@ -1,6 +1,17 @@
 package day08
 
 object Day08 {
+    private fun recursivelyMove(node: Pair<String, String>, nodes: Map<String, Pair<String, String>>, iterator: MovesIterator, target: String): Int {
+        val nextNode = when (iterator.next()) {
+            Move.Left -> node.first
+            Move.Right -> node.second
+        }
+        if (nextNode == target) {
+            return 1
+        }
+        return 1 + recursivelyMove(nodes[nextNode]!!, nodes, iterator, target)
+    }
+
     fun processPart1(input: String): Int {
         val maps = input.filter { it != '\r' }.split("\n\n")
         val allowedChars = setOf('R', 'L')
@@ -12,23 +23,9 @@ object Day08 {
             }
         }
         val regex = "([A-Z]{3}) = \\(([A-Z]{3}), ([A-Z]{3})\\)".toRegex()
-        val levels = maps[1].split("\n").mapNotNull { regex.find(it) }.associate {
+        val nodes = maps[1].split("\n").mapNotNull { regex.find(it) }.associate {
             it.groupValues[1] to Pair(it.groupValues[2], it.groupValues[3])
         }
-        var counter = 0
-        var node = levels["AAA"]!!
-        val movesIterator = MovesIterator(moves)
-        while (movesIterator.hasNext()) {
-            counter += 1
-            val nextNode = when (movesIterator.next()) {
-                Move.Left -> node.first
-                Move.Right -> node.second
-            }
-            if (nextNode == "ZZZ") {
-                break
-            }
-            node = levels[nextNode]!!
-        }
-        return counter
+        return recursivelyMove(nodes["AAA"]!!, nodes, MovesIterator(moves), "ZZZ")
     }
 }
