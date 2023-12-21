@@ -1,6 +1,6 @@
 package day08
 
-class MovesIterator(private var moves: List<String>) : Iterator<String> {
+class MovesIterator(private var moves: List<Move>) : Iterator<Move> {
 
     private var state = moves.iterator()
 
@@ -8,7 +8,7 @@ class MovesIterator(private var moves: List<String>) : Iterator<String> {
         return true
     }
 
-    override fun next(): String {
+    override fun next(): Move {
         if (!state.hasNext())
             state = moves.iterator()
         return state.next()
