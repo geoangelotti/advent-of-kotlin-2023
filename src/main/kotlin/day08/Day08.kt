@@ -1,7 +1,13 @@
 package day08
 
 object Day08 {
-    private tailrec fun recursivelyMove(node: Pair<String, String>, nodes: Map<String, Pair<String, String>>, iterator: MovesIterator, check: (String)-> Boolean, accumulator: Int): Int {
+    private tailrec fun recursivelyMove(
+        node: Pair<String, String>,
+        nodes: Map<String, Pair<String, String>>,
+        iterator: MovesIterator,
+        check: (String) -> Boolean,
+        accumulator: Int
+    ): Int {
         val next = accumulator + 1
         val nextNode = when (iterator.next()) {
             Move.Left -> node.first
