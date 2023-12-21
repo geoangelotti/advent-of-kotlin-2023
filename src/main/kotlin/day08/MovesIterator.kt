@@ -1,4 +1,4 @@
-package day01
+package day08
 
 class MovesIterator(private var moves: List<String>) : Iterator<String> {
 

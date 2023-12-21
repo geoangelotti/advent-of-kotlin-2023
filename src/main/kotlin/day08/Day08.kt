@@ -1,7 +1,5 @@
 package day08
 
-import day01.MovesIterator
-
 object Day08 {
     fun processPart1(input: String): Int {
         val maps = input.filter { it != '\r' }.split("\n\n")
