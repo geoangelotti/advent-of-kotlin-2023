@@ -13,7 +13,7 @@ object Day08 {
         return recursivelyMove(nodes[nextNode]!!, nodes, iterator, target, next)
     }
 
-    fun processPart1(input: String): Int {
+    private fun generateInput(input: String, regex: Regex): Pair<List<Move>, Map<String, Pair<String, String>>> {
         val maps = input.filter { it != '\r' }.split("\n\n")
         val allowedChars = setOf('R', 'L')
         val moves = maps[0].filter { allowedChars.contains(it) }.split("").mapNotNull {
@@ -23,10 +23,15 @@ object Day08 {
                 else -> null
             }
         }
-        val regex = "([A-Z]{3}) = \\(([A-Z]{3}), ([A-Z]{3})\\)".toRegex()
         val nodes = maps[1].split("\n").mapNotNull { regex.find(it) }.associate {
             it.groupValues[1] to Pair(it.groupValues[2], it.groupValues[3])
         }
+        return Pair(moves, nodes)
+    }
+
+    fun processPart1(input: String): Int {
+        val regex = "([A-Z]{3}) = \\(([A-Z]{3}), ([A-Z]{3})\\)".toRegex()
+        val (moves, nodes) = generateInput(input, regex)
         return recursivelyMove(nodes["AAA"]!!, nodes, MovesIterator(moves), "ZZZ", 0)
     }
 }
