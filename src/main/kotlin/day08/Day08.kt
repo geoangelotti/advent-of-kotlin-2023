@@ -1,16 +1,16 @@
 package day08
 
 object Day08 {
-    private tailrec fun recursivelyMove(node: Pair<String, String>, nodes: Map<String, Pair<String, String>>, iterator: MovesIterator, target: String, accumulator: Int): Int {
+    private tailrec fun recursivelyMove(node: Pair<String, String>, nodes: Map<String, Pair<String, String>>, iterator: MovesIterator, check: (String)-> Boolean, accumulator: Int): Int {
         val next = accumulator + 1
         val nextNode = when (iterator.next()) {
             Move.Left -> node.first
             Move.Right -> node.second
         }
-        if (nextNode == target) {
+        if (check(nextNode)) {
             return next
         }
-        return recursivelyMove(nodes[nextNode]!!, nodes, iterator, target, next)
+        return recursivelyMove(nodes[nextNode]!!, nodes, iterator, check, next)
     }
 
     private fun generateInput(input: String, regex: Regex): Pair<List<Move>, Map<String, Pair<String, String>>> {
@@ -32,6 +32,7 @@ object Day08 {
     fun processPart1(input: String): Int {
         val regex = "([A-Z]{3}) = \\(([A-Z]{3}), ([A-Z]{3})\\)".toRegex()
         val (moves, nodes) = generateInput(input, regex)
-        return recursivelyMove(nodes["AAA"]!!, nodes, MovesIterator(moves), "ZZZ", 0)
+        fun check(node: String): Boolean = node == "ZZZ"
+        return recursivelyMove(nodes["AAA"]!!, nodes, MovesIterator(moves), ::check, 0)
     }
 }
