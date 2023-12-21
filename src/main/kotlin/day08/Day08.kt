@@ -34,7 +34,7 @@ object Day08 {
                 Move.Right -> it.second
             }
         }
-       if (nextNodes.all { check(it) }) {
+        if (nextNodes.all { check(it) }) {
             return next
         }
         return recursivelySandMove(nextNodes.map { nodess[it]!! }, nodess, iterator, check, next)
@@ -79,13 +79,13 @@ object Day08 {
         if (nums.size == 1)
             return a
         val b = leastCommonMultiple(nums.slice(1..<nums.size))
-        return a*b/ greaterCommonDividor(a,b)
+        return a * b / greaterCommonDividor(a, b)
     }
 
-    private fun greaterCommonDividor(a: Long, b: Long): Long{
+    private fun greaterCommonDividor(a: Long, b: Long): Long {
         if (b == (0).toLong()) {
             return a
         }
-        return greaterCommonDividor(b, a%b)
+        return greaterCommonDividor(b, a % b)
     }
 }
