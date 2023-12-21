@@ -6,8 +6,8 @@ object Day08 {
         val allowedChars = setOf('R', 'L')
         val moves = maps[0].filter { allowedChars.contains(it) }.split("").filter { it.isNotEmpty() }
         val regex = "([A-Z]{3}) = \\(([A-Z]{3}), ([A-Z]{3})\\)".toRegex()
-        val levels = maps[1].split("\n").associate { level ->
-            regex.find(level).let { it!!.groupValues[1] to Pair(it.groupValues[2], it.groupValues[3]) }
+        val levels = maps[1].split("\n").mapNotNull { regex.find(it) }.associate {
+            it.groupValues[1] to Pair(it.groupValues[2], it.groupValues[3])
         }
         var counter = 0
         var i = 0
