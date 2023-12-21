@@ -1,5 +1,7 @@
 package day08
 
+import day01.MovesIterator
+
 object Day08 {
     fun processPart1(input: String): Int {
         val maps = input.filter { it != '\r' }.split("\n\n")
@@ -10,12 +12,11 @@ object Day08 {
             it.groupValues[1] to Pair(it.groupValues[2], it.groupValues[3])
         }
         var counter = 0
-        var i = 0
         var node = levels["AAA"]!!
-        while (true) {
+        val movesIterator = MovesIterator(moves)
+        while (movesIterator.hasNext()) {
             counter += 1
-            val move = moves[i]
-            val nextNode = when (move) {
+            val nextNode = when (movesIterator.next()) {
                 "R" -> node.second
                 "L" -> node.first
                 else -> ""
@@ -24,11 +25,6 @@ object Day08 {
                 break
             }
             node = levels[nextNode]!!
-            if (i == moves.size - 1) {
-                i = 0
-            } else {
-                i += 1
-            }
         }
         return counter
     }
