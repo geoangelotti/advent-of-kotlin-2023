@@ -64,11 +64,28 @@ object Day08 {
         return recursivelyMove(nodes["AAA"]!!, nodes, MovesIterator(moves), ::check, 0)
     }
 
-    fun processPart2(input: String): Int {
+    fun processPart2(input: String): Long {
         val regex = "([A-Z0-9]{3}) = \\(([A-Z0-9]{3}), ([A-Z0-9]{3})\\)".toRegex()
         val (moves, nodes) = generateInput(input, regex)
         val starts = nodes.keys.filter { it.last() == 'A' }
         fun check(node: String): Boolean = node.last() == 'Z'
-        return recursivelySandMove(starts.map { nodes[it]!! }, nodes, MovesIterator(moves), ::check, 0)
+        return leastCommonMultiple(starts.map { recursivelyMove(nodes[it]!!, nodes, MovesIterator(moves), ::check, 0) })
+    }
+
+    private fun leastCommonMultiple(nums: List<Int>): Long {
+        if (nums.isEmpty())
+            return 1
+        val a = nums.first().toLong()
+        if (nums.size == 1)
+            return a
+        val b = leastCommonMultiple(nums.slice(1..<nums.size))
+        return a*b/ greaterCommonDividor(a,b)
+    }
+
+    private fun greaterCommonDividor(a: Long, b: Long): Long{
+        if (b == (0).toLong()) {
+            return a
+        }
+        return greaterCommonDividor(b, a%b)
     }
 }
