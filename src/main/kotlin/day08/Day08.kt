@@ -19,6 +19,28 @@ object Day08 {
         return recursivelyMove(nodes[nextNode]!!, nodes, iterator, check, next)
     }
 
+    private tailrec fun recursivelySandMove(
+        nodes: List<Pair<String, String>>,
+        nodess: Map<String, Pair<String, String>>,
+        iterator: MovesIterator,
+        check: (String) -> Boolean,
+        accumulator: Int
+    ): Int {
+        val next = accumulator + 1
+        val move = iterator.next()
+        val nextNodes = nodes.map {
+            when (move) {
+                Move.Left -> it.first
+                Move.Right -> it.second
+            }
+        }
+       if (nextNodes.all { check(it) }) {
+            return next
+        }
+        return recursivelySandMove(nextNodes.map { nodess[it]!! }, nodess, iterator, check, next)
+    }
+
+
     private fun generateInput(input: String, regex: Regex): Pair<List<Move>, Map<String, Pair<String, String>>> {
         val maps = input.filter { it != '\r' }.split("\n\n")
         val allowedChars = setOf('R', 'L')
@@ -40,5 +62,13 @@ object Day08 {
         val (moves, nodes) = generateInput(input, regex)
         fun check(node: String): Boolean = node == "ZZZ"
         return recursivelyMove(nodes["AAA"]!!, nodes, MovesIterator(moves), ::check, 0)
+    }
+
+    fun processPart2(input: String): Int {
+        val regex = "([A-Z0-9]{3}) = \\(([A-Z0-9]{3}), ([A-Z0-9]{3})\\)".toRegex()
+        val (moves, nodes) = generateInput(input, regex)
+        val starts = nodes.keys.filter { it.last() == 'A' }
+        fun check(node: String): Boolean = node.last() == 'Z'
+        return recursivelySandMove(starts.map { nodes[it]!! }, nodes, MovesIterator(moves), ::check, 0)
     }
 }
