@@ -4,7 +4,7 @@ object Day08 {
     private tailrec fun recursivelyMove(
         node: Pair<String, String>,
         nodes: Map<String, Pair<String, String>>,
-        iterator: MovesIterator,
+        iterator: CyclicIterator<Move>,
         check: (String) -> Boolean,
         accumulator: Int
     ): Int {
@@ -22,7 +22,7 @@ object Day08 {
     private tailrec fun recursivelySandMove(
         nodes: List<Pair<String, String>>,
         nodess: Map<String, Pair<String, String>>,
-        iterator: MovesIterator,
+        iterator: CyclicIterator<Move>,
         check: (String) -> Boolean,
         accumulator: Int
     ): Int {
@@ -61,7 +61,7 @@ object Day08 {
         val regex = "([A-Z]{3}) = \\(([A-Z]{3}), ([A-Z]{3})\\)".toRegex()
         val (moves, nodes) = generateInput(input, regex)
         fun check(node: String): Boolean = node == "ZZZ"
-        return recursivelyMove(nodes["AAA"]!!, nodes, MovesIterator(moves), ::check, 0)
+        return recursivelyMove(nodes["AAA"]!!, nodes, CyclicIterator<Move>(moves), ::check, 0)
     }
 
     fun processPart2(input: String): Long {
@@ -69,7 +69,15 @@ object Day08 {
         val (moves, nodes) = generateInput(input, regex)
         val starts = nodes.keys.filter { it.last() == 'A' }
         fun check(node: String): Boolean = node.last() == 'Z'
-        return leastCommonMultiple(starts.map { recursivelyMove(nodes[it]!!, nodes, MovesIterator(moves), ::check, 0) })
+        return leastCommonMultiple(starts.map {
+            recursivelyMove(
+                nodes[it]!!,
+                nodes,
+                CyclicIterator<Move>(moves),
+                ::check,
+                0
+            )
+        })
     }
 
     private fun leastCommonMultiple(nums: List<Int>): Long {
