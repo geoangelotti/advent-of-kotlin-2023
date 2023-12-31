@@ -5,6 +5,7 @@ object Day08 {
         node: Pair<String, String>,
         nodes: Map<String, Pair<String, String>>,
         iterator: CyclicIterator<Move>,
+
         check: (String) -> Boolean,
         accumulator: Int
     ): Int {
@@ -87,13 +88,13 @@ object Day08 {
         if (nums.size == 1)
             return a
         val b = leastCommonMultiple(nums.slice(1..<nums.size))
-        return a * b / greaterCommonDividor(a, b)
+        return a * b / greaterCommonDivisor(a, b)
     }
 
-    private fun greaterCommonDividor(a: Long, b: Long): Long {
+    private fun greaterCommonDivisor(a: Long, b: Long): Long {
         if (b == (0).toLong()) {
             return a
         }
-        return greaterCommonDividor(b, a % b)
+        return greaterCommonDivisor(b, a % b)
     }
 }
