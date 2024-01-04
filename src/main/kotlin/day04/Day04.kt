@@ -2,7 +2,7 @@ package day04
 
 object Day04 {
 
-    open fun processPart1(input: String): Int {
+    fun processPart1(input: String): Int {
         var result = 0
         val lists = input.split("\n").forEach {
             var counter = 0
@@ -20,17 +20,15 @@ object Day04 {
                 println(nn)
                 nn.forEach { num ->
                     println(num)
-                    if ( myList.contains(num) && num.trim().isNotEmpty()) {
+                    if (myList.contains(num) && num.trim().isNotEmpty()) {
                         println("found $num")
-                        if (counter == 0){
+                        if (counter == 0) {
                             singleVal = 1
-                        }
-                        else{
+                        } else {
                             singleVal *= 2
                         }
                         counter += 1
                     }
-
                 }
                 result += singleVal
             }
