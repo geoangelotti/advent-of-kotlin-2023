@@ -1,38 +1,17 @@
 package day04
 
+import kotlin.math.pow
+
 object Day04 {
 
-    fun processPart1(input: String): Int {
-        var result = 0
-        val lists = input.split("\n").forEach {
-            var counter = 0
-            var singleVal = 0
-
-            it.split(":")[1].let { it2 ->
-                val numbers = it2.split("|")
-                val myNumbers = numbers[1]
-                val winningNumbers = numbers[0]
-                println(winningNumbers)
-                println(myNumbers)
-
-                val nn = winningNumbers.trim().split(" ")
-                val myList = myNumbers.trim().split(" ")
-                println(nn)
-                nn.forEach { num ->
-                    println(num)
-                    if (myList.contains(num) && num.trim().isNotEmpty()) {
-                        println("found $num")
-                        if (counter == 0) {
-                            singleVal = 1
-                        } else {
-                            singleVal *= 2
-                        }
-                        counter += 1
-                    }
-                }
-                result += singleVal
-            }
+    fun processPart1(input: String): Int =
+        input.split("\n").sumOf { line ->
+            line.split(":")[1].let { game ->
+                val (winningNumbers, myNumbers) = game.split("|")
+                val winningSet = winningNumbers.split(" ").filter { it.trim().isNotEmpty() }.toSet()
+                val mySet = myNumbers.split(" ").filter { it.trim().isNotEmpty() }.toSet()
+                val winners = winningSet.intersect(mySet).size
+                if (winners == 0) 0 else 2f.pow(winners - 1)
+            }.toInt()
         }
-        return result
-    }
 }
