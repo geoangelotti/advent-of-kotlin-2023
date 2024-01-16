@@ -1,7 +1,5 @@
 package day04
 
-import kotlin.math.pow
-
 object Day04 {
 
     fun processPart1(input: String): Int =
@@ -11,7 +9,7 @@ object Day04 {
                 val winningSet = winningNumbers.split(" ").filter { it.trim().isNotEmpty() }.toSet()
                 val mySet = myNumbers.split(" ").filter { it.trim().isNotEmpty() }.toSet()
                 val winners = winningSet.intersect(mySet).size
-                if (winners == 0) 0 else 2f.pow(winners - 1)
-            }.toInt()
+                if (winners == 0) 0 else 1 shl (winners - 1)
+            }
         }
 }
