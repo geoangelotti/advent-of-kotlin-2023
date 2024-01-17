@@ -19,6 +19,9 @@ object Day07 {
             }.withIndex()
             .sumOf { (it.index + 1) * it.value.second }
 
+    fun processPart2(input: String): Int =
+        0
+
     private fun getHandStrength(cards: String): Pair<HandType, List<Int>> {
         val count = cards.fold(mutableMapOf<Char, Int>()) { acc, c ->
             acc.putIfAbsent(c, 0)
