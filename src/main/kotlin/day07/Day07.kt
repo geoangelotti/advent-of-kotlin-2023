@@ -8,7 +8,7 @@ object Day07 {
         }
             .sortedWith { (_, _, a), (_, _, b) ->
                 if (a.first != b.first) {
-                    return@sortedWith a.first.toInt() - b.first.toInt()
+                    return@sortedWith a.first.ordinal - b.first.ordinal
                 }
                 a.second.zip(b.second).fold(0) { acc, (a2, b2) ->
                     if (a2 != b2) {
