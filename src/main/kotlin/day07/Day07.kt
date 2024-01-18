@@ -42,9 +42,8 @@ object Day07 {
             acc
         }
 
-    private fun getHandStrength(cards: String): Pair<HandType, List<Int>> {
-        val count = getCount(cards).values.sorted().joinToString("")
-        val handType = when (count) {
+    private fun getHandType(cards: String): HandType =
+        when (cards) {
             "5" -> HandType.FiveOfAKind
             "14" -> HandType.FourOfAKind
             "23" -> HandType.FullHouse
@@ -54,6 +53,10 @@ object Day07 {
             "11111" -> HandType.HighCard
             else -> null
         }!!
+
+    private fun getHandStrength(cards: String): Pair<HandType, List<Int>> {
+        val count = getCount(cards).values.sorted().joinToString("")
+        val handType = getHandType(count)
         val handScore = getHandScore(cards)
         return Pair(handType, handScore)
     }
