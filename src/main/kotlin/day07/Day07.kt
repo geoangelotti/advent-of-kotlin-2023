@@ -1,10 +1,11 @@
 package day07
 
 object Day07 {
-    fun processPart1(input: String): Int =
+
+    private fun process(input: String, strengthResolver: (String) -> Pair<HandType, List<Int>>): Int =
         input.lines().map { line ->
             val (cards, bid) = line.split(" ")
-            Triple(cards, bid.toInt(), getHandStrength(cards))
+            Triple(cards, bid.toInt(), strengthResolver(cards))
         }.sortedWith { (_, _, a), (_, _, b) ->
             if (a.first != b.first) {
                 return@sortedWith a.first.ordinal - b.first.ordinal
@@ -16,6 +17,9 @@ object Day07 {
                 acc
             }
         }.withIndex().sumOf { (it.index + 1) * it.value.second }
+
+    fun processPart1(input: String): Int =
+        process(input, ::getHandStrength)
 
     fun processPart2(input: String): Int =
         0
