@@ -37,7 +37,7 @@ object Day07 {
         }
 
     private fun getCount(cards: String): MutableMap<Char, Int> =
-        cards.fold(mutableMapOf<Char, Int>()) { acc, c ->
+        cards.fold(mutableMapOf()) { acc, c ->
             acc.putIfAbsent(c, 0)
             acc[c] = acc[c]!! + 1
             acc
