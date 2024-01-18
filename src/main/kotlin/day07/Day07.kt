@@ -24,12 +24,26 @@ object Day07 {
     fun processPart2(input: String): Int =
         0
 
-    private fun getHandStrength(cards: String): Pair<HandType, List<Int>> {
-        val count = cards.fold(mutableMapOf<Char, Int>()) { acc, c ->
+    private fun getHandScore(cards: String): List<Int> = cards.map {
+        when (it) {
+            'A' -> 14
+            'K' -> 13
+            'Q' -> 12
+            'J' -> 11
+            'T' -> 10
+            else -> it.digitToInt()
+        }
+    }
+
+    private fun getCount(cards: String): MutableMap<Char, Int> =
+        cards.fold(mutableMapOf<Char, Int>()) { acc, c ->
             acc.putIfAbsent(c, 0)
             acc[c] = acc[c]!! + 1
             acc
-        }.values.sorted().joinToString("")
+        }
+
+    private fun getHandStrength(cards: String): Pair<HandType, List<Int>> {
+        val count = getCount(cards).values.sorted().joinToString("")
         val handType = when (count) {
             "5" -> HandType.FiveOfAKind
             "14" -> HandType.FourOfAKind
@@ -40,16 +54,7 @@ object Day07 {
             "11111" -> HandType.HighCard
             else -> null
         }!!
-        val handScore = cards.map {
-            when (it) {
-                'A' -> 14
-                'K' -> 13
-                'Q' -> 12
-                'J' -> 11
-                'T' -> 10
-                else -> it.digitToInt()
-            }
-        }
+        val handScore = getHandScore(cards)
         return Pair(handType, handScore)
     }
 }
