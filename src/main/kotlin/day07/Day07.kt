@@ -24,16 +24,17 @@ object Day07 {
     fun processPart2(input: String): Int =
         process(input, ::getJokerHandStrength)
 
-    private fun getHandScore(cards: String): List<Int> = cards.map {
-        when (it) {
-            'A' -> 14
-            'K' -> 13
-            'Q' -> 12
-            'J' -> 11
-            'T' -> 10
-            else -> it.digitToInt()
+    private fun getHandScore(cards: String): List<Int> =
+        cards.map {
+            when (it) {
+                'A' -> 14
+                'K' -> 13
+                'Q' -> 12
+                'J' -> 11
+                'T' -> 10
+                else -> it.digitToInt()
+            }
         }
-    }
 
     private fun getCount(cards: String): MutableMap<Char, Int> =
         cards.fold(mutableMapOf<Char, Int>()) { acc, c ->
