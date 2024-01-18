@@ -22,7 +22,7 @@ object Day07 {
         process(input, ::getHandStrength)
 
     fun processPart2(input: String): Int =
-        0
+        process(input, ::getJokerHandStrength)
 
     private fun getHandScore(cards: String): List<Int> = cards.map {
         when (it) {
@@ -56,6 +56,19 @@ object Day07 {
 
     private fun getHandStrength(cards: String): Pair<HandType, List<Int>> {
         val count = getCount(cards).values.sorted().joinToString("")
+        val handType = getHandType(count)
+        val handScore = getHandScore(cards)
+        return Pair(handType, handScore)
+    }
+
+    private fun getJokerHandStrength(cards: String): Pair<HandType, List<Int>> {
+        val jokers = cards.filter { it == 'J' }.length
+        if (jokers == 0) {
+            return getHandStrength(cards)
+        }
+        val noJokers = cards.filter { it != 'J' }
+        val map = getCount(noJokers).entries.sortedWith { a, b -> a.value - b.value }
+        val count = map.joinToString("")
         val handType = getHandType(count)
         val handScore = getHandScore(cards)
         return Pair(handType, handScore)
