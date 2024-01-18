@@ -5,19 +5,17 @@ object Day07 {
         input.lines().map { line ->
             val (cards, bid) = line.split(" ")
             Triple(cards, bid.toInt(), getHandStrength(cards))
-        }
-            .sortedWith { (_, _, a), (_, _, b) ->
-                if (a.first != b.first) {
-                    return@sortedWith a.first.ordinal - b.first.ordinal
+        }.sortedWith { (_, _, a), (_, _, b) ->
+            if (a.first != b.first) {
+                return@sortedWith a.first.ordinal - b.first.ordinal
+            }
+            a.second.zip(b.second).fold(0) { acc, (a2, b2) ->
+                if (a2 != b2) {
+                    return@sortedWith a2 - b2
                 }
-                a.second.zip(b.second).fold(0) { acc, (a2, b2) ->
-                    if (a2 != b2) {
-                        return@sortedWith a2 - b2
-                    }
-                    acc
-                }
-            }.withIndex()
-            .sumOf { (it.index + 1) * it.value.second }
+                acc
+            }
+        }.withIndex().sumOf { (it.index + 1) * it.value.second }
 
     fun processPart2(input: String): Int =
         0
