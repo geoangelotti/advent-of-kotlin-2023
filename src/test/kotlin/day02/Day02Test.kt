@@ -14,4 +14,9 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"""
     fun `Test part 1`() {
         assertEquals(8, Day02.processPart1(input))
     }
+
+    @Test
+    fun `Test part 2`() {
+        assertEquals(2286, Day02.processPart2(input))
+    }
 }
