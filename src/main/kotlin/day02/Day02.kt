@@ -22,7 +22,7 @@ object Day02 {
             val line = it.split(":")
             val draws = line[1].split(";")
             val minimumBallsRequired = mutableMapOf("red" to 0, "green" to 0, "blue" to 0)
-            val b = draws.forEach() { draw ->
+            draws.forEach() { draw ->
                 draw.split(",").forEach() { cube ->
                     val (_, number, color) = cube.split(" ")
                     val max = minimumBallsRequired[color]!!
