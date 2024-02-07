@@ -3,7 +3,10 @@ package day10
 import java.util.PriorityQueue
 
 object Day10 {
-    private fun potentialNeighbours(point: Pair<Int, Int>, grid: MutableList<MutableList<PipePart>>): List<Pair<Int, Int>> =
+    private fun potentialNeighbours(
+        point: Pair<Int, Int>,
+        grid: MutableList<MutableList<PipePart>>
+    ): List<Pair<Int, Int>> =
         when (grid[point.second][point.first]) {
             PipePart.NORTHSOUTH -> listOf(
                 Pair(point.first, point.second - 1),
