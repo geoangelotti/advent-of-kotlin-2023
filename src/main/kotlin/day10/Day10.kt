@@ -37,8 +37,10 @@ object Day10 {
 
             PipePart.GROUND -> listOf()
             PipePart.START -> listOf(
-                *potentialNeighbours(point, grid).toTypedArray(),
-                *potentialNeighbours(point, grid).toTypedArray(),
+                Pair(point.first, point.second - 1),
+                Pair(point.first, point.second + 1),
+                Pair(point.first - 1, point.second),
+                Pair(point.first + 1, point.second),
             )
         }
 
