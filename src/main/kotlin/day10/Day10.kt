@@ -79,7 +79,8 @@ object Day10 {
         priorityQueue.add(Pair(start, 0))
         while (priorityQueue.isNotEmpty()) {
             val (u, uDist) = priorityQueue.poll()
-            if (uDist > dist[u] ) continue
+            if (uDist > dist[u])
+                continue
             for (edge in edges[u]) {
                 val weight = 1
                 if (uDist + weight < dist[edge]) {
