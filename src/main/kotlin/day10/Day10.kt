@@ -113,6 +113,34 @@ object Day10 {
         return dist
     }
 
+    private fun filterNext(
+        point: Pair<Int, Int>,
+        grid: MutableList<MutableList<PipePart>>,
+        seen: Set<Pair<Int, Int>>
+    ): Pair<Int, Int>? {
+        try {
+            val neighbours = potentialNeighbours(point, grid)
+            val commonNeighbours = neighbours.toSet().intersect(seen).toList()
+            return commonNeighbours.ifEmpty { null }?.let { point }
+        } catch (e: IndexOutOfBoundsException) {
+            return null
+        }
+    }
+
+    private fun traverse(input: String): Int {
+        val (grid, start) = getGrid(input)
+        val seen = mutableSetOf(start!!)
+        var next = potentialNeighbours(start, grid)
+        var acc = 0
+        while (!next.all { seen.contains(it) }) {
+            next.forEach { seen.add(it) }
+            acc += 1
+            val filtered = next.mapNotNull { neighbour -> filterNext(neighbour, grid, seen) }
+            next = filtered.map { potentialNeighbours(it, grid) }.flatten().filter { !seen.contains(it) }
+        }
+        return acc
+    }
+
     fun processPart1(input: String): Int {
         val (grid, start) = getGrid(input)
         val edges = getEdges(grid)
