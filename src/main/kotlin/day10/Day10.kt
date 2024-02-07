@@ -3,8 +3,11 @@ package day10
 import java.util.PriorityQueue
 
 object Day10 {
-    private fun potentialNeighbours(pipe: PipePart, point: Pair<Int, Int>): List<Pair<Int, Int>> =
-        when (pipe) {
+    private fun potentialNeighbours(
+        point: Pair<Int, Int>,
+        grid: MutableList<MutableList<PipePart>>
+    ): List<Pair<Int, Int>> =
+        when (grid[point.second][point.first]) {
             PipePart.NORTHSOUTH -> listOf(
                 Pair(point.first, point.second - 1),
                 Pair(point.first, point.second + 1)
@@ -37,8 +40,10 @@ object Day10 {
 
             PipePart.GROUND -> listOf()
             PipePart.START -> listOf(
-                *potentialNeighbours(PipePart.NORTHSOUTH, point).toTypedArray(),
-                *potentialNeighbours(PipePart.WESTEAST, point).toTypedArray(),
+                Pair(point.first, point.second - 1),
+                Pair(point.first, point.second + 1),
+                Pair(point.first - 1, point.second),
+                Pair(point.first + 1, point.second),
             )
         }
 
@@ -54,14 +59,29 @@ object Day10 {
             else -> PipePart.GROUND
         }
 
+    private fun getGrid(input: String): Pair<MutableList<MutableList<PipePart>>, Pair<Int, Int>?> {
+        val grid = mutableListOf<MutableList<PipePart>>()
+        var start: Pair<Int, Int>? = null
+        input.lines().withIndex().forEach { line ->
+            val row = mutableListOf<PipePart>()
+            line.value.withIndex().forEach { column ->
+                val part = charToPipe(column.value)
+                if (part == PipePart.START)
+                    start = Pair(column.index, line.index)
+                row.add(part)
+            }
+            grid.add(row)
+        }
+        return Pair(grid, start)
+    }
+
     private fun getEdges(grid: MutableList<MutableList<PipePart>>): List<Pair<Pair<Int, Int>, Pair<Int, Int>>> =
         grid.withIndex().map { row ->
             row.value.withIndex().map { column ->
                 val parent = Pair(column.index, row.index)
-                potentialNeighbours(column.value, parent).mapNotNull { neighbour ->
+                potentialNeighbours(parent, grid).mapNotNull { neighbour ->
                     try {
-                        val part = grid[neighbour.second][neighbour.first]
-                        val commonNeighbours = potentialNeighbours(part, neighbour).toSet()
+                        val commonNeighbours = potentialNeighbours(neighbour, grid).toSet()
                             .intersect(setOf(parent))
                         commonNeighbours.ifEmpty { null }?.map { Pair(it, neighbour) }
                     } catch (e: IndexOutOfBoundsException) {
@@ -80,7 +100,8 @@ object Day10 {
         priorityQueue.add(Pair(start, 0))
         while (priorityQueue.isNotEmpty()) {
             val (u, uDist) = priorityQueue.poll()
-            if (uDist > dist[u] ) continue
+            if (uDist > dist[u])
+                continue
             for (edge in edges[u]) {
                 val weight = 1
                 if (uDist + weight < dist[edge]) {
@@ -92,19 +113,36 @@ object Day10 {
         return dist
     }
 
-    fun processPart1(input: String): Int {
-        val grid = mutableListOf<MutableList<PipePart>>()
-        var start: Pair<Int, Int>? = null
-        input.lines().withIndex().forEach { line ->
-            val row = mutableListOf<PipePart>()
-            line.value.withIndex().forEach { column ->
-                val part = charToPipe(column.value)
-                if (part == PipePart.START)
-                    start = Pair(column.index, line.index)
-                row.add(part)
-            }
-            grid.add(row)
+    private fun filterNext(
+        point: Pair<Int, Int>,
+        grid: MutableList<MutableList<PipePart>>,
+        seen: Set<Pair<Int, Int>>
+    ): Pair<Int, Int>? {
+        try {
+            val neighbours = potentialNeighbours(point, grid)
+            val commonNeighbours = neighbours.toSet().intersect(seen).toList()
+            return commonNeighbours.ifEmpty { null }?.let { point }
+        } catch (e: IndexOutOfBoundsException) {
+            return null
         }
+    }
+
+    private fun traverse(input: String): Int {
+        val (grid, start) = getGrid(input)
+        val seen = mutableSetOf(start!!)
+        var next = potentialNeighbours(start, grid)
+        var acc = 0
+        while (!next.all { seen.contains(it) }) {
+            next.forEach { seen.add(it) }
+            acc += 1
+            val filtered = next.mapNotNull { neighbour -> filterNext(neighbour, grid, seen) }
+            next = filtered.map { potentialNeighbours(it, grid) }.flatten().filter { !seen.contains(it) }
+        }
+        return acc
+    }
+
+    private fun djikstraSolution(input: String): Int {
+        val (grid, start) = getGrid(input)
         val edges = getEdges(grid)
         val vertices = edges.map { it.first }.toSet()
             .sortedWith { a, b -> if (a.first == b.first) a.second - b.second else a.first - b.first }
@@ -115,5 +153,9 @@ object Day10 {
         simplerEdges.forEach { graphEdges[it.first].add(it.second) }
         val result = djikstra(startingVertex, graphEdges)
         return result.toList().filter { it < Int.MAX_VALUE }.maxOf { it }
+    }
+
+    fun processPart1(input: String): Int {
+        return traverse(input)
     }
 }
