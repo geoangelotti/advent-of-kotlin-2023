@@ -3,8 +3,8 @@ package day10
 import java.util.PriorityQueue
 
 object Day10 {
-    private fun potentialNeighbours(pipe: PipePart, point: Pair<Int, Int>): List<Pair<Int, Int>> =
-        when (pipe) {
+    private fun potentialNeighbours(point: Pair<Int, Int>, grid: MutableList<MutableList<PipePart>>): List<Pair<Int, Int>> =
+        when (grid[point.second][point.first]) {
             PipePart.NORTHSOUTH -> listOf(
                 Pair(point.first, point.second - 1),
                 Pair(point.first, point.second + 1)
@@ -37,8 +37,8 @@ object Day10 {
 
             PipePart.GROUND -> listOf()
             PipePart.START -> listOf(
-                *potentialNeighbours(PipePart.NORTHSOUTH, point).toTypedArray(),
-                *potentialNeighbours(PipePart.WESTEAST, point).toTypedArray(),
+                *potentialNeighbours(point, grid).toTypedArray(),
+                *potentialNeighbours(point, grid).toTypedArray(),
             )
         }
 
@@ -58,10 +58,9 @@ object Day10 {
         grid.withIndex().map { row ->
             row.value.withIndex().map { column ->
                 val parent = Pair(column.index, row.index)
-                potentialNeighbours(column.value, parent).mapNotNull { neighbour ->
+                potentialNeighbours(parent, grid).mapNotNull { neighbour ->
                     try {
-                        val part = grid[neighbour.second][neighbour.first]
-                        val commonNeighbours = potentialNeighbours(part, neighbour).toSet()
+                        val commonNeighbours = potentialNeighbours(neighbour, grid).toSet()
                             .intersect(setOf(parent))
                         commonNeighbours.ifEmpty { null }?.map { Pair(it, neighbour) }
                     } catch (e: IndexOutOfBoundsException) {
