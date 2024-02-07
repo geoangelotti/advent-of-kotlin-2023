@@ -54,6 +54,22 @@ object Day10 {
             else -> PipePart.GROUND
         }
 
+    private fun getGrid(input: String): Pair<MutableList<MutableList<PipePart>>, Pair<Int, Int>?> {
+        val grid = mutableListOf<MutableList<PipePart>>()
+        var start: Pair<Int, Int>? = null
+        input.lines().withIndex().forEach { line ->
+            val row = mutableListOf<PipePart>()
+            line.value.withIndex().forEach { column ->
+                val part = charToPipe(column.value)
+                if (part == PipePart.START)
+                    start = Pair(column.index, line.index)
+                row.add(part)
+            }
+            grid.add(row)
+        }
+        return Pair(grid, start)
+    }
+
     private fun getEdges(grid: MutableList<MutableList<PipePart>>): List<Pair<Pair<Int, Int>, Pair<Int, Int>>> =
         grid.withIndex().map { row ->
             row.value.withIndex().map { column ->
@@ -93,18 +109,7 @@ object Day10 {
     }
 
     fun processPart1(input: String): Int {
-        val grid = mutableListOf<MutableList<PipePart>>()
-        var start: Pair<Int, Int>? = null
-        input.lines().withIndex().forEach { line ->
-            val row = mutableListOf<PipePart>()
-            line.value.withIndex().forEach { column ->
-                val part = charToPipe(column.value)
-                if (part == PipePart.START)
-                    start = Pair(column.index, line.index)
-                row.add(part)
-            }
-            grid.add(row)
-        }
+        val (grid, start) = getGrid(input)
         val edges = getEdges(grid)
         val vertices = edges.map { it.first }.toSet()
             .sortedWith { a, b -> if (a.first == b.first) a.second - b.second else a.first - b.first }
