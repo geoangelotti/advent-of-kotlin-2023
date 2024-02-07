@@ -141,7 +141,7 @@ object Day10 {
         return acc
     }
 
-    fun processPart1(input: String): Int {
+    private fun djikstraSolution(input: String): Int {
         val (grid, start) = getGrid(input)
         val edges = getEdges(grid)
         val vertices = edges.map { it.first }.toSet()
@@ -153,5 +153,9 @@ object Day10 {
         simplerEdges.forEach { graphEdges[it.first].add(it.second) }
         val result = djikstra(startingVertex, graphEdges)
         return result.toList().filter { it < Int.MAX_VALUE }.maxOf { it }
+    }
+
+    fun processPart1(input: String): Int {
+        return traverse(input)
     }
 }
