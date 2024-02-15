@@ -68,8 +68,12 @@ object Day07 {
             return getHandStrength(cards)
         }
         val noJokers = cards.filter { it != 'J' }
-        val map = getCount(noJokers).entries.sortedWith { a, b -> a.value - b.value }
-        val count = map.joinToString("")
+        val list = getCount(noJokers).values.sortedWith { a, b -> a - b }.toMutableList()
+        if (list.isEmpty()) {
+            list.add(0)
+        }
+        list[list.size - 1] += jokers
+        val count = list.joinToString("")
         val handType = getHandType(count)
         val handScore = getHandScore(cards)
         return Pair(handType, handScore)
