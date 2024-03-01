@@ -15,4 +15,10 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"""
     fun `Test part 1`() {
         assertEquals(13, Day04.processPart1(input))
     }
+
+    @Test
+    fun `Test part 2`() {
+        assertEquals(30, Day04.processPart2(input))
+    }
+
 }
