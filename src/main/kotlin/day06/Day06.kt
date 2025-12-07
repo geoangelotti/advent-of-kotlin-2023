@@ -17,4 +17,6 @@ object Day06 {
             time - 2 * minimumTimeHeld!! + 1
         }.reduce { acc, i -> acc * i }
     }
+
+    fun processPart2(input: String): Int = 0
 }
