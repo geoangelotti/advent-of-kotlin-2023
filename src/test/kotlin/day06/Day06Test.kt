@@ -15,7 +15,7 @@ Distance:  9  40  200"""
 
     @Test
     fun `Test part 2`() {
-        assertEquals(37286485, Day06.processPart2(input))
+        assertEquals(71503, Day06.processPart2(input))
     }
 
 }
