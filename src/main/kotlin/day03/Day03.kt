@@ -38,6 +38,25 @@ object Day03 {
         return points
     }
 
+    private fun numbersOfInterest(
+        point: Pair<Int, Int>,
+        numbers: List<Triple<Int, Int, IntRange>>
+    ): Pair<Int, Int>? {
+        val points = pointsOfInterest(point.second to point.first..<point.first + 1)
+        val interestingNumbers = mutableSetOf<Int>()
+        numbers.forEach { number ->
+            number.third.forEach {
+               if (points.contains(it to number.second))
+                   interestingNumbers.add(number.first)
+            }
+        }
+        return if (interestingNumbers.size > 1) {
+            interestingNumbers.toList()[0] to interestingNumbers.toList()[1]
+        } else {
+            null
+        }
+    }
+
     fun processPart1(input: String): Int {
         val symbolLocations = getSymbolLocations(input, Regex("[^0-9.]"))
         val numbers = getNumbers(input)
@@ -47,6 +66,8 @@ object Day03 {
     }
 
     fun processPart2(input: String): Int {
-        TODO()
+        val symbolLocations = getSymbolLocations(input, Regex("\\*"))
+        val numbers = getNumbers(input)
+        return symbolLocations.mapNotNull { numbersOfInterest(it, numbers) }.sumOf { it.first * it.second }
     }
 }
