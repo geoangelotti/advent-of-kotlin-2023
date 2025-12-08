@@ -1,11 +1,10 @@
 package day03
 
 object Day03 {
-    private fun getSymbolLocations(input: String): Set<Pair<Int, Int>> {
+    private fun getSymbolLocations(input: String, regex: Regex): Set<Pair<Int, Int>> {
         val locations = mutableSetOf<Pair<Int, Int>>()
-        val symbolRegex = Regex("[^0-9.]")
         input.lines().forEachIndexed { index, s ->
-            symbolRegex.findAll(s).forEach { matchResult ->
+            regex.findAll(s).forEach { matchResult ->
                 locations.add(Pair(matchResult.range.first, index))
             }
         }
@@ -40,7 +39,7 @@ object Day03 {
     }
 
     fun processPart1(input: String): Int {
-        val symbolLocations = getSymbolLocations(input)
+        val symbolLocations = getSymbolLocations(input, Regex("[^0-9.]"))
         val numbers = getNumbers(input)
         return numbers
             .filter { pointsOfInterest(it.second to it.third).any { point -> symbolLocations.contains(point) } }
