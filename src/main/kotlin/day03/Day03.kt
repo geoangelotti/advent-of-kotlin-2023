@@ -46,4 +46,8 @@ object Day03 {
             .filter { pointsOfInterest(it.second to it.third).any { point -> symbolLocations.contains(point) } }
             .sumOf { it.first }
     }
+
+    fun processPart2(input: String): Int {
+        TODO()
+    }
 }
