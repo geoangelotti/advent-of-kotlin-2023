@@ -43,15 +43,10 @@ object Day03 {
         numbers: List<Triple<Int, Int, IntRange>>
     ): Pair<Int, Int>? {
         val points = pointsOfInterest(point.second to point.first..<point.first + 1)
-        val interestingNumbers = mutableSetOf<Int>()
-        numbers.forEach { number ->
-            number.third.forEach {
-               if (points.contains(it to number.second))
-                   interestingNumbers.add(number.first)
-            }
-        }
+        val interestingNumbers =
+            numbers.filter { (_, j, range) -> range.any { i -> points.contains(i to j) } }.map { it.first }.distinct()
         return if (interestingNumbers.size > 1) {
-            interestingNumbers.toList()[0] to interestingNumbers.toList()[1]
+            interestingNumbers[0] to interestingNumbers[1]
         } else {
             null
         }
