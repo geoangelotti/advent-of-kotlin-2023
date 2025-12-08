@@ -20,4 +20,9 @@ class Day03Test {
         assertEquals(4361, Day03.processPart1(input))
     }
 
+    @Test
+    fun `Test part 2`() {
+        assertEquals(467835, Day03.processPart2(input))
+    }
+
 }

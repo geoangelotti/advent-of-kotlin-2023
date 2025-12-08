@@ -1,11 +1,10 @@
 package day03
 
 object Day03 {
-    private fun getSymbolLocations(input: String): Set<Pair<Int, Int>> {
+    private fun getSymbolLocations(input: String, regex: Regex): Set<Pair<Int, Int>> {
         val locations = mutableSetOf<Pair<Int, Int>>()
-        val symbolRegex = Regex("[^0-9.]")
         input.lines().forEachIndexed { index, s ->
-            symbolRegex.findAll(s).forEach { matchResult ->
+            regex.findAll(s).forEach { matchResult ->
                 locations.add(Pair(matchResult.range.first, index))
             }
         }
@@ -39,11 +38,31 @@ object Day03 {
         return points
     }
 
+    private fun numbersOfInterest(
+        point: Pair<Int, Int>,
+        numbers: List<Triple<Int, Int, IntRange>>
+    ): Pair<Int, Int>? {
+        val points = pointsOfInterest(point.second to point.first..<point.first + 1)
+        val interestingNumbers =
+            numbers.filter { (_, j, range) -> range.any { i -> points.contains(i to j) } }.map { it.first }.distinct()
+        return if (interestingNumbers.size > 1) {
+            interestingNumbers[0] to interestingNumbers[1]
+        } else {
+            null
+        }
+    }
+
     fun processPart1(input: String): Int {
-        val symbolLocations = getSymbolLocations(input)
+        val symbolLocations = getSymbolLocations(input, Regex("[^0-9.]"))
         val numbers = getNumbers(input)
         return numbers
             .filter { pointsOfInterest(it.second to it.third).any { point -> symbolLocations.contains(point) } }
             .sumOf { it.first }
+    }
+
+    fun processPart2(input: String): Int {
+        val symbolLocations = getSymbolLocations(input, Regex("\\*"))
+        val numbers = getNumbers(input)
+        return symbolLocations.mapNotNull { numbersOfInterest(it, numbers) }.sumOf { it.first * it.second }
     }
 }
