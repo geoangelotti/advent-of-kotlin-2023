@@ -23,9 +23,6 @@ object Day06 {
         val time = times.joinTo(StringBuilder(), "").toString().toInt()
         val distance = distances.joinTo(StringBuilder(), "").toString().toInt()
         val minimumTimeHeld = 0.until(time + 1).find { timeHeld -> timeHeld * (time - timeHeld) > distance }
-        println(time)
-        println(distance)
-        println(minimumTimeHeld)
         return time - 2 * minimumTimeHeld!! + 1
     }
 }
