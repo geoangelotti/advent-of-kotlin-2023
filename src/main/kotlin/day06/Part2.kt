@@ -3,5 +3,5 @@ package day06
 import processDay
 
 fun main() {
-    processDay("day06.txt", Day06::processPart2)
+    processDay("day06.txt", "part2 output:", Day06::processPart2)
 }
