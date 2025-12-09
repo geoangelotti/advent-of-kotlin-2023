@@ -1,6 +1,7 @@
 package day01
 
+import processDay
+
 fun main() {
-    val input = object {}.javaClass.getResource("../day01.txt")?.readText(Charsets.UTF_8).orEmpty()
-    println("part2 output: ${Day01.processPart2(input)}")
+    processDay("day01.txt", "part2 output:", Day01::processPart2)
 }
