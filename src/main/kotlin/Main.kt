@@ -6,7 +6,7 @@ fun main(args: Array<String>) {
     println("Program arguments: ${args.joinToString()}")
 }
 
-fun <T> processDay(day: String, solution: (String) -> T) {
+fun <T> processDay(day: String, message: String, solution: (String) -> T) {
     val input = object {}.javaClass.getResource(day)?.readText(Charsets.UTF_8).orEmpty()
-    println("output: ${solution(input)}")
+    println("$message ${solution(input)}")
 }
